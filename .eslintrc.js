@@ -29,6 +29,7 @@ module.exports = {
                 endOfLine: 'auto',
                 useTabs: false,
                 tabWidth: 4,
+                printWidth: 120,
             },
         ],
         // 'prettier-multiline-arrays-next-threshold': 2,
