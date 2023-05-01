@@ -145,11 +145,15 @@ export class JsonRpcRequestClient {
         this.#id = value;
     }
 
+    toJSON() {
+        return this.getRequestObject();
+    }
+
     setIdNull() {
         this.#id = null;
     }
 
-    getRequestJson() {
+    getRequestObject() {
         const obj = {
             jsonrpc: this.version,
             method: this.method,
@@ -163,6 +167,10 @@ export class JsonRpcRequestClient {
             obj.id = this.id;
         }
 
-        return JSON.stringify(obj);
+        return obj;
+    }
+
+    getRequestJson() {
+        return JSON.stringify(this.getRequestObject());
     }
 }
