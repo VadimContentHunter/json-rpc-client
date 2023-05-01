@@ -13,7 +13,16 @@
     <script type="module">
         import {JsonRpcRequestClient} from '../src/JsonRpcRequestClient.js';
 
-        const jsonRpcRequestClient = new JsonRpcRequestClient('test', 'data_test');
+        const jsonRpcRequestClient = new JsonRpcRequestClient();
+        jsonRpcRequestClient.method = 'test';
+        jsonRpcRequestClient.params = [];
+        const jsonRpcRequestClient2 = new JsonRpcRequestClient();
+        jsonRpcRequestClient2.method = 'test2';
+        jsonRpcRequestClient2.params = [];
+        const jsonRpcRequestClient3 = new JsonRpcRequestClient();
+        jsonRpcRequestClient3.method = 'test2';
+        jsonRpcRequestClient3.params = [];
+        console.log(jsonRpcRequestClient2.getRequestJson());
     </script>
 </body>
 
