@@ -6,7 +6,11 @@ export class JsonRpcError {
     #data = null;
 
     constructor(json) {
-        this.initializeObject(json);
+        if (typeof json === 'object') {
+            this.initialize(json);
+        } else {
+            this.initializeObjectFromJson(json);
+        }
     }
 
     get code() {
@@ -38,12 +42,16 @@ export class JsonRpcError {
         return this.#data;
     }
 
-    initializeObject(json) {
+    initializeObjectFromJson(json) {
         if (typeof json !== 'string') {
             throw new JsonRpcRequestError('Параметр json не является строкой.');
         }
 
         let object = JSON.parse(json);
+        this.initialize(object);
+    }
+
+    initialize(object) {
         if (!Object.hasOwn(object, 'code')) {
             throw new JsonRpcRequestError('Не удалось найти в json свойство code');
         }
