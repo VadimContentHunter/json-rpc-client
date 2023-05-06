@@ -9,7 +9,7 @@ export class JsonRpcResponseClient {
     #id;
 
     constructor(json) {
-        this.initializeObject(json);
+        this.initializeObjectFromJson(json);
     }
 
     get version() {
@@ -70,7 +70,7 @@ export class JsonRpcResponseClient {
         return this.#error;
     }
 
-    initializeObject(json) {
+    initializeObjectFromJson(json) {
         if (typeof json !== 'string') {
             throw new JsonRpcRequestError('Параметр json не является строкой.');
         }
@@ -80,11 +80,22 @@ export class JsonRpcResponseClient {
             return value;
         });
 
+        if (Array.isArray(object)) {
+            object.forEach((elemObject) => {
+                this.initialize(elemObject);
+            });
+        } else {
+            this.initialize(object);
+        }
+    }
+
+    initialize(object) {
         if (!Object.hasOwn(object, 'version') && !Object.hasOwn(object, 'jsonrpc')) {
             throw new JsonRpcRequestError('Не удалось найти в json свойство version или jsonrpc');
         }
 
         if (Object.hasOwn(object, 'jsonrpc')) {
+            // eslint-disable-next-line no-param-reassign
             object.version = object.jsonrpc;
         }
 
@@ -131,7 +142,7 @@ export class JsonRpcResponseClient {
         }
 
         this.#version = object.version;
-        this.#id = Number(object.id);
+        this.#id = object.id !== null ? Number(object.id) : null;
 
         if (typeof object.result === 'undefined') {
             this.#error = object.error;

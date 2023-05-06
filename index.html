@@ -14,7 +14,7 @@
         import { JsonRpcRequestClient } from '../src/JsonRpcRequestClient.js';
         import { JsonRpcResponseClient } from '../src/JsonRpcResponseClient.js';
 
-        let json = '{"jsonrpc": "2.0", "error": {"code": -32601, "message": "Method not found"}, "id": "1"}';
+        let json = '{"jsonrpc": "2.0", "error": {"code": -32601, "message": "Method not found"}, "id": null}';
         const jsonRpcResponseClient = new JsonRpcResponseClient(json);
         console.log(jsonRpcResponseClient);
 
