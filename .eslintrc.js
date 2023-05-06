@@ -4,7 +4,7 @@ module.exports = {
         browser: true,
     },
     extends: [
-        'standard',
+        // 'standard',
         'airbnb-base/legacy',
         'plugin:prettier/recommended',
     ],
@@ -17,6 +17,23 @@ module.exports = {
         // 'prettier-plugin-multiline-arrays',
     ],
     rules: {
+        'no-unused-vars': [
+            'error',
+            {
+                vars: 'local',
+                argsIgnorePattern: '^event$', // regex для игнорирования аргументов функций
+            },
+        ],
+        'class-methods-use-this': [
+            'error',
+            {
+                exceptMethods: [
+                    'handleEvent',
+                    'toJSON',
+                    'responseHandler',
+                ],
+            },
+        ],
         'lines-between-class-members': [
             'error',
             'always',
