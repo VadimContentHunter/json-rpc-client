@@ -44,11 +44,11 @@ export class JsonRpcError {
         }
 
         let object = JSON.parse(json);
-        if (!object.hasOwnProperty.call('code')) {
+        if (!Object.hasOwn(object, 'code')) {
             throw new JsonRpcRequestError('Не удалось найти в json свойство code');
         }
 
-        if (!object.hasOwnProperty.call('message')) {
+        if (!Object.hasOwn(object, 'message')) {
             throw new JsonRpcRequestError('Не удалось найти в json свойство message');
         }
 
