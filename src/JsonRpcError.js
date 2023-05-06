@@ -52,6 +52,24 @@ export class JsonRpcError {
             throw new JsonRpcRequestError('Не удалось найти в json свойство message');
         }
 
+        if (!Number.isInteger(object.code)) {
+            throw new JsonRpcRequestError('Поле object.code не является целочисленным числом.');
+        }
+
+        if (typeof object.message !== 'string') {
+            throw new JsonRpcRequestError('Поле object.message не является строкой.');
+        }
+
+        if (
+            object.message === '' ||
+            object.message.match(/^(\s+).*$/i) !== null ||
+            object.message.match(/.*(\s)$/i) !== null
+        ) {
+            throw new JsonRpcRequestError(
+                'Поле object.message не должно быть пустой строкой или содержать пробелы в начале и конце.',
+            );
+        }
+
         this.#code = object.code;
         this.#message = object.message;
         if (object.hasOwnProperty.call('data')) {
