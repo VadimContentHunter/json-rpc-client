@@ -74,6 +74,19 @@ export class JsonRpcResponseClient {
         return this.#error;
     }
 
+    checkError() {
+        if (typeof this.#result !== 'undefined' && this.#error instanceof JsonRpcError) {
+            throw new JsonRpcRequestError(
+                'Только одно поле должно иметь значение ИЛИ JsonRpcResponseClient.result ИЛИ JsonRpcResponseClient.error!',
+            );
+        }
+
+        if (this.#error instanceof JsonRpcError) {
+            return true;
+        }
+        return false;
+    }
+
     initializeObjectFromJson(json) {
         if (typeof json !== 'string') {
             throw new JsonRpcRequestError('Параметр json не является строкой.');
