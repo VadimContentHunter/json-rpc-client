@@ -21,7 +21,7 @@ export class JsonRpcError {
     }
 
     get message() {
-        if (typeof this.message !== 'string') {
+        if (typeof this.#message !== 'string') {
             throw new JsonRpcRequestError('Поле message не является строкой.');
         }
 

@@ -108,14 +108,18 @@ export class JsonRpcResponseClient {
 
     initialize(object) {
         let error = null;
+        let version = -1;
 
         if (!Object.hasOwn(object, 'version') && !Object.hasOwn(object, 'jsonrpc')) {
             throw new JsonRpcRequestError('Не удалось найти в json свойство version или jsonrpc');
         }
 
+        if (Object.hasOwn(object, 'version')) {
+            version = object.version;
+        }
+
         if (Object.hasOwn(object, 'jsonrpc')) {
-            // eslint-disable-next-line no-param-reassign
-            object.version = object.jsonrpc;
+            version = object.jsonrpc;
         }
 
         if (!Object.hasOwn(object, 'id')) {
@@ -132,21 +136,7 @@ export class JsonRpcResponseClient {
             error = object.error;
         }
 
-        if (typeof object.version !== 'string') {
-            throw new JsonRpcRequestError('Поле object.version не является строкой.');
-        }
-
-        if (
-            object.version === '' ||
-            object.version.match(/^(\s+).*$/i) !== null ||
-            object.version.match(/.*(\s)$/i) !== null
-        ) {
-            throw new JsonRpcRequestError(
-                'Поле object.version не должно быть пустой строкой или содержать пробелы в начале и конце.',
-            );
-        }
-
-        if (object.version !== this.#lockVersion) {
+        if (version !== this.#lockVersion) {
             throw new JsonRpcRequestError('Версия ответа не ' + this.#lockVersion);
         }
 
@@ -162,7 +152,7 @@ export class JsonRpcResponseClient {
             throw new JsonRpcRequestError('Только одно поле должно иметь значение ИЛИ object.result ИЛИ object.error!');
         }
 
-        this.#version = object.version;
+        this.#version = version;
         this.#id = object.id !== null ? Number(object.id) : null;
 
         if (typeof object.result === 'undefined') {
