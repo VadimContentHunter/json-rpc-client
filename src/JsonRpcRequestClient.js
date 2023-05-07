@@ -82,15 +82,15 @@ export class JsonRpcRequestClient {
 
     // get set for this.#params
     get params() {
-        if (!Array.isArray(this.#params)) {
-            throw new JsonRpcRequestError('Поле params не является массивом.');
+        if (!Array.isArray(this.#params) && typeof this.#params !== 'object') {
+            throw new JsonRpcRequestError('Поле params не является массивом или объектом.');
         }
         return this.#params;
     }
 
     set params(value) {
-        if (!Array.isArray(value)) {
-            throw new JsonRpcRequestError('Значение value для params не является массивом.');
+        if (!Array.isArray(value) && typeof value !== 'object') {
+            throw new JsonRpcRequestError('Значение value для params не является массивом или объектом.');
         }
         this.#params = value;
     }
