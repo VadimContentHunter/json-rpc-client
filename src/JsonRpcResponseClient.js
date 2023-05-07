@@ -61,7 +61,7 @@ export class JsonRpcResponseClient {
     }
 
     get error() {
-        if (this.#error instanceof JsonRpcError) {
+        if (!(this.#error instanceof JsonRpcError)) {
             throw new JsonRpcRequestError('Поле error должно быть объектом JsonRpcError класса.');
         }
 
@@ -135,10 +135,6 @@ export class JsonRpcResponseClient {
 
         if (object.id < 0 && object.id !== null) {
             throw new JsonRpcRequestError('Поле object.id не должно быть меньше 0.');
-        }
-
-        if (typeof object.result === 'undefined' && !(object.error instanceof JsonRpcError)) {
-            throw new JsonRpcRequestError('Одно из полей object.result или object.error должно иметь значение.');
         }
 
         if (typeof object.result !== 'undefined' && object.error instanceof JsonRpcError) {
