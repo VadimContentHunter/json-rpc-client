@@ -1,6 +1,6 @@
 {
   "name": "vadimcontenthunter-json-rpc-client",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "json rpc for client",
   "author": {
     "name": "Vadim Volkovskyi",

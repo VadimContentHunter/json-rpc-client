@@ -9,7 +9,11 @@ export class JsonRpcResponseClient {
     #id;
 
     constructor(json) {
-        this.initializeObjectFromJson(json);
+        if (typeof json === 'object') {
+            this.initialize(json);
+        } else {
+            this.initializeObjectFromJson(json);
+        }
     }
 
     get version() {
