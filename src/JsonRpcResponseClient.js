@@ -129,7 +129,7 @@ export class JsonRpcResponseClient {
             throw new JsonRpcRequestError('Версия ответа не ' + this.#lockVersion);
         }
 
-        if (Number.isInteger(object.id) && object.id !== null) {
+        if (!Number.isInteger(object.id) && object.id !== null) {
             throw new JsonRpcRequestError('Поле object.id не является числом или null.');
         }
 
