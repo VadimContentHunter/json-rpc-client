@@ -159,7 +159,7 @@ export class JsonRpcRequestClient {
             method: this.method,
         };
 
-        if (this.params.length > 0) {
+        if (typeof this.params === 'object' || this.params.length > 0) {
             obj.params = this.params;
         }
 
