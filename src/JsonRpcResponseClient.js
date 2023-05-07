@@ -107,6 +107,8 @@ export class JsonRpcResponseClient {
     }
 
     initialize(object) {
+        let error = null;
+
         if (!Object.hasOwn(object, 'version') && !Object.hasOwn(object, 'jsonrpc')) {
             throw new JsonRpcRequestError('Не удалось найти в json свойство version или jsonrpc');
         }
@@ -122,6 +124,12 @@ export class JsonRpcResponseClient {
 
         if (!Object.hasOwn(object, 'result') && !Object.hasOwn(object, 'error')) {
             throw new JsonRpcRequestError('Не удалось найти в json свойство result или error');
+        }
+
+        if (Object.hasOwn(object, 'error') && !(object.error instanceof JsonRpcError)) {
+            error = new JsonRpcError(object.error);
+        } else {
+            error = object.error;
         }
 
         if (typeof object.version !== 'string') {
@@ -150,7 +158,7 @@ export class JsonRpcResponseClient {
             throw new JsonRpcRequestError('Поле object.id не должно быть меньше 0.');
         }
 
-        if (typeof object.result !== 'undefined' && object.error instanceof JsonRpcError) {
+        if (typeof object.result !== 'undefined' && error instanceof JsonRpcError) {
             throw new JsonRpcRequestError('Только одно поле должно иметь значение ИЛИ object.result ИЛИ object.error!');
         }
 
@@ -158,7 +166,7 @@ export class JsonRpcResponseClient {
         this.#id = object.id !== null ? Number(object.id) : null;
 
         if (typeof object.result === 'undefined') {
-            this.#error = object.error;
+            this.#error = error;
         } else {
             this.#result = object.result;
         }
