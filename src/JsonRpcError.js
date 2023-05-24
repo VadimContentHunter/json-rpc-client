@@ -80,7 +80,7 @@ export class JsonRpcError {
 
         this.#code = object.code;
         this.#message = object.message;
-        if (object.hasOwnProperty.call('data')) {
+        if (Object.hasOwn(object, 'data')) {
             this.#data = object.data;
         }
     }
